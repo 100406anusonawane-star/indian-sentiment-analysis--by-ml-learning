@@ -59,10 +59,32 @@ print("\nClassification Report:\n")
 print(classification_report(y_test, y_pred))
 
 # Custom test
-sample = "Product quality bahut achi hai"
-sample_clean = clean_text(sample)
-sample_vec = vectorizer.transform([sample_clean])
-prediction = model.predict(sample_vec)
+print("\n" + "="*40)
+print("Interactive Sentiment Testing")
+print("Type 'exit' or 'quit' to stop.")
+print("="*40)
 
-print("\nCustom Review Prediction:")
-print(sample, "→", "Positive" if prediction[0] == 1 else "Negative")
+while True:
+    # Get custom input from the user
+    user_input = input("\nEnter a custom review: ")
+    
+    # Check if the user wants to exit
+    if user_input.lower() in ['exit', 'quit']:
+        print("Exiting interactive testing. Goodbye!")
+        break
+        
+    # Prevent crashing if the user just presses Enter without typing anything
+    if not user_input.strip():
+        print("Please enter some text.")
+        continue
+        
+    # Process the custom input exactly like the training data
+    sample_clean = clean_text(user_input)
+    sample_vec = vectorizer.transform([sample_clean])
+    
+    # Generate the prediction
+    prediction = model.predict(sample_vec)
+    
+    # Output the result
+    sentiment_result = "Positive" if prediction[0] == 1 else "Negative"
+    print(f"Prediction → {sentiment_result}")
